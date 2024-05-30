@@ -34,42 +34,50 @@ module.exports = {
         // исключает папку node_modules, файлы в ней обрабатывать не нужно
         exclude: "/node_modules/",
       },
-      {
-        test: /\.svg$/i,
-				use:[
-					{
-						loader:'file-loader',
-						options:{
-							name:'[name].[ext]',
-							outputPath:'asset/resource/svg/',
-						}
-					}
-				],
-      },
-      {
-        test: /\.(png|jpg|gif)$/i,
-				use:[
-					{
-						loader:'file-loader',
-						options:{
-							name:'[name].[ext]',
-							outputPath:'asset/resource/image/',
-						}
-					}
-				],
-      },
-      {
-        test: /\.(woff(2)?|eot|ttf|otf)$/i,
-				use:[
-					{
-						loader:'file-loader',
-						options:{
-							name:'[name].[ext]',
-							outputPath:'asset/resource/font/',
-						}
-					}
-				]
-      },
+			{
+				// регулярное выражение, которое ищет все файлы с такими расширениями
+				test: /\.(png|svg|jpg|gif|woff(2)?|eot|ttf|otf)$/,
+				type: 'asset/resource',
+				generator: {
+					filename: 'static/[ext]/[hash][ext][query]'
+				}
+			},
+      // {
+      //   test: /\.svg$/i,
+			// 	use:[
+			// 		{
+			// 			loader:'file-loader',
+			// 			options:{
+			// 				name:'[name].[ext]',
+			// 				outputPath:'asset/resource/svg/',
+			// 			}
+			// 		}
+			// 	],
+      // },
+      // {
+      //   test: /\.(png|jpg|gif)$/i,
+			// 	use:[
+			// 		{
+			// 			loader:'file-loader',
+			// 			options:{
+			// 				name:'[name].[ext]',
+			// 				outputPath:'asset/resource/image/',
+			// 			}
+			// 		}
+			// 	],
+      // },
+      // {
+      //   test: /\.(woff(2)?|eot|ttf|otf)$/i,
+			// 	use:[
+			// 		{
+			// 			loader:'file-loader',
+			// 			options:{
+			// 				name:'[name].[ext]',
+			// 				outputPath:'asset/resource/font/',
+			// 			}
+			// 		}
+			// 	]
+      // },
       {
         test: /\.scss$/i,
         use: [
