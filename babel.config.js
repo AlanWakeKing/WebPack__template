@@ -7,11 +7,15 @@ const presets = [
       chrome: '64',
       safari: '11.1'
     },
+		
 
     // использовать полифилы для браузеров из свойства target
     // по умолчанию babel использует полифилы библиотеки core-js
     useBuiltIns: "entry"
-  }]
+  },
+
+	'@babel/preset-typescript']
 ];
+
 
 module.exports = { presets };

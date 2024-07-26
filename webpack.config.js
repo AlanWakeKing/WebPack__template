@@ -4,15 +4,14 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 // подключите к проекту mini-css-extract-plugin
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const loader = require("sass-loader");
-const { type } = require("os");
-const { name } = require("file-loader");
 
 module.exports = {
-  entry: { main: "./src/index.js" },
+  entry: { main: "./src/index.ts" },
+	devtool: "source-map",
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "[name].[hash].js",
+		filename: "[name].[hash].js",
+    path: path.resolve(__dirname, "./dist"),
+		filename: "static/js/[name].[hash].js",
     publicPath: "",
   },
   mode: "development",
@@ -24,62 +23,54 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.(ts|tsx)$/i,
+        use: ["babel-loader", "ts-loader"],
+        exclude: ["/node_modules/"],
+      },
+
       // rules — это массив правил
       // добавим в него объект правил для бабеля
-      {
-        // регулярное выражение, которое ищет все js файлы
-        test: /\.js$/,
-        // при обработке этих файлов нужно использовать babel-loader
-        use: "babel-loader",
-        // исключает папку node_modules, файлы в ней обрабатывать не нужно
-        exclude: "/node_modules/",
-      },
+      // {
+      //   // регулярное выражение, которое ищет все js файлы
+      //   test: /\.js$/,
+      //   // при обработке этих файлов нужно использовать babel-loader
+      //   use: "babel-loader",
+      //   // исключает папку node_modules, файлы в ней обрабатывать не нужно
+      //   exclude: "/node_modules/",
+      // },
 			{
 				// регулярное выражение, которое ищет все файлы с такими расширениями
-				test: /\.(png|svg|jpg|gif|woff(2)?|eot|ttf|otf)$/,
+				test: /\.(svg)$/,
 				type: 'asset/resource',
 				generator: {
-					filename: 'static/[ext]/[hash][ext][query]'
+					filename: 'static/svg/[hash][ext][query]'
 				}
 			},
-      // {
-      //   test: /\.svg$/i,
-			// 	use:[
-			// 		{
-			// 			loader:'file-loader',
-			// 			options:{
-			// 				name:'[name].[ext]',
-			// 				outputPath:'asset/resource/svg/',
-			// 			}
-			// 		}
-			// 	],
-      // },
-      // {
-      //   test: /\.(png|jpg|gif)$/i,
-			// 	use:[
-			// 		{
-			// 			loader:'file-loader',
-			// 			options:{
-			// 				name:'[name].[ext]',
-			// 				outputPath:'asset/resource/image/',
-			// 			}
-			// 		}
-			// 	],
-      // },
-      // {
-      //   test: /\.(woff(2)?|eot|ttf|otf)$/i,
-			// 	use:[
-			// 		{
-			// 			loader:'file-loader',
-			// 			options:{
-			// 				name:'[name].[ext]',
-			// 				outputPath:'asset/resource/font/',
-			// 			}
-			// 		}
-			// 	]
-      // },
+			{
+				// регулярное выражение, которое ищет все файлы с такими расширениями
+				test: /\.(ico)$/,
+				type: 'asset/resource',
+				generator: {
+					filename: 'static/ico/[hash][ext][query]'
+				}
+			},
+			{
+				test: /\.(png|jpg|gif)$/i,
+			 type: 'asset/resource',
+			 generator: {
+				 filename: 'static/images/[hash][ext][query]'
+			 }
+			},
+			{
+				test: /\.(woff(2)?|eot|ttf|otf)$/i,
+			 type: 'asset/resource',
+			 generator: {
+				 filename: 'static/font/[hash][ext][query]'
+			 }
+			},
       {
-        test: /\.scss$/i,
+        test: /\.s[ac]ss$/i,
         use: [
           MiniCssExtractPlugin.loader, {
           	loader: 'css-loader',
@@ -99,6 +90,9 @@ module.exports = {
       },
     ],
   },
+	// resolve:{
+	// 	extensions: ['.tsx', '.ts', '.js'],
+	// },
   plugins: [
     new HtmlWebpackPlugin({
       title: "WebPack",
